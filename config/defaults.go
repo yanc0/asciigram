@@ -11,14 +11,14 @@ func defaults() map[string]string {
 		"PG_PORT":     "5432",
 		"PG_USER":     "postgres",
 		"PG_PASSWORD": "postgres",
-		"PG_DBNAME":   "skalogram",
+		"PG_DBNAME":   "asciigram",
 
 		"REDIS_HOST": "127.0.0.1",
 		"REDIS_PORT": "6379",
 		"CACHE_TTL":  "60s",
 
 		"STORAGE_TYPE":          "gs",
-		"STORAGE_BUCKET":        "skalogram-posts-dev",
+		"STORAGE_BUCKET":        "asciigram-posts-dev",
 		"STORAGE_BUCKET_REGION": "eu-west3",
 
 		"LISTEN_ADDR": "0.0.0.0",

@@ -8,7 +8,7 @@ import (
 	"log"
 	"os"
 
-	"asciigram"
+	web "asciigram"
 	"asciigram/config"
 	"asciigram/delivery/http"
 	"asciigram/pkg/gcs"
@@ -64,7 +64,7 @@ func main() {
 		redis.NewClient(redisConn),
 	)
 	if err := postCacheService.Ping(ctx); err != nil {
-		log.Printf("[WARNING] failed to ping cache service (redis). Skalogram will run as degraded mode: %s\n", err.Error())
+		log.Printf("[WARNING] failed to ping cache service (redis). asciigram will run as degraded mode: %s\n", err.Error())
 	}
 
 	// STORAGE SERVICE

@@ -25,14 +25,14 @@ Default configurations:
         CACHE_TTL="60s"
         LISTEN_ADDR="0.0.0.0"
         LISTEN_PORT="8080"
-        PG_DBNAME="skalogram"
+        PG_DBNAME="asciigram"
         PG_HOST="127.0.0.1"
         PG_PASSWORD="postgres"
         PG_PORT="5432"
         PG_USER="postgres"
         REDIS_HOST="127.0.0.1"
         REDIS_PORT="6379"
-        STORAGE_BUCKET="skalogram-posts-dev"
+        STORAGE_BUCKET="asciigram-posts-dev"
         STORAGE_BUCKET_REGION="eu-west3"
         STORAGE_TYPE="s3" ["s3","gs"]
 ```
