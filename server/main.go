@@ -1,0 +1,97 @@
+package main
+
+import (
+	"context"
+	"database/sql"
+	"flag"
+	"fmt"
+	"log"
+	"os"
+
+	"asciigram"
+	"asciigram/config"
+	"asciigram/delivery/http"
+	"asciigram/pkg/gcs"
+	"asciigram/pkg/s3"
+
+	"asciigram/pkg/postgresql/post"
+	"asciigram/pkg/redis"
+
+	_ "github.com/lib/pq"
+)
+
+func main() {
+
+	isPrintDefaults := flag.Bool("print-defaults", false, "Print default configurations")
+	flag.Parse()
+
+	if *isPrintDefaults {
+		config.PrintDefaults()
+		os.Exit(1)
+	}
+
+	ctx := context.Background()
+
+	// DATABASE SERVICE
+	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+		config.Env().Get("PG_HOST"),
+		config.Env().Get("PG_PORT"),
+		config.Env().Get("PG_USER"),
+		config.Env().Get("PG_PASSWORD"),
+		config.Env().Get("PG_DBNAME"),
+	)
+
+	db, err := sql.Open("postgres", psqlInfo)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	postDatabaseService := web.NewPostDatabaseService(
+		post.New(db),
+	)
+
+	err = postDatabaseService.CreateTable(ctx)
+	if err != nil {
+		//log.Fatalf("failed to init table on startup: %s\n", err.Error())
+	}
+
+	// CACHE SERVICE
+	redisConn := fmt.Sprintf("%s:%s",
+		config.Env().Get("REDIS_HOST"),
+		config.Env().Get("REDIS_PORT"),
+	)
+	postCacheService := web.NewPostCacheService(
+		redis.NewClient(redisConn),
+	)
+	if err := postCacheService.Ping(ctx); err != nil {
+		log.Printf("[WARNING] failed to ping cache service (redis). Skalogram will run as degraded mode: %s\n", err.Error())
+	}
+
+	// STORAGE SERVICE
+	var postStorageService *web.PostStorageService
+
+	switch config.Env().Get("STORAGE_TYPE") {
+	case "gs":
+		postStorageService = web.NewPostStorageService(
+			gcs.NewClient(ctx),
+		)
+	case "s3":
+		postStorageService = web.NewPostStorageService(
+			s3.NewClient(ctx, config.Env().Get("STORAGE_BUCKET_REGION")),
+		)
+	default:
+		log.Fatal("no storage type configured")
+	}
+
+	listenAddr := fmt.Sprintf("%s:%s",
+		config.Env().Get("LISTEN_ADDR"),
+		config.Env().Get("LISTEN_PORT"),
+	)
+	server := http.NewServer(http.NewServerArgs{
+		ListenAddr:          listenAddr,
+		PostDatabaseService: postDatabaseService,
+		PostCacheService:    postCacheService,
+		PostStorageService:  postStorageService,
+	})
+	server.Run()
+}
