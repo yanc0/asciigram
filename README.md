@@ -1,7 +1,7 @@
 # ASCIIGram
 ## Description
 
-`ASCIIGram` is a social image sharing platform used for educationnal purposes. It is a great demo app to learn
+`ASCIIGram` is a social image sharing platform used for educational purposes. It is a great demo app to learn
 cloud deployment with standard technologies like: docker, redis or postgresql. In order to deploy this app,
 the user should understand networking, databases, secrets sharing, IAM.
 
