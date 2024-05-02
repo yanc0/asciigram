@@ -9,7 +9,7 @@ the user should understand networking, databases, secrets sharing, IAM.
 * `Cloud Storage` stores the binary images
 * `Redis` caches ascii, TTL is configurable
 
-By default, ASCIIGram listen on HTTP port 8080.
+By default, ASCIIGram listens on HTTP port 8080.
 
 ## Usage
 ```
