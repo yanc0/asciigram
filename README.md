@@ -1,7 +1,7 @@
 # ASCIIGram
 ## Description
 
-`ASCIIGram` is an social image sharing platform used for educationnal purposes. It is a great demo app to learn
+`ASCIIGram` is a social image sharing platform used for educationnal purposes. It is a great demo app to learn
 cloud deployment with standard technologies like: docker, redis or postgresql. In order to deploy this app,
 the user should understand networking, databases, secrets sharing, IAM.
 
@@ -37,7 +37,7 @@ Default configurations:
         STORAGE_TYPE="s3" ["s3","gs"]
 ```
 
-Object storage access is automatically configured either by AWS Assume role or GCP Instance service account. There are no configurable Cloud accesses.
+This app will authenticate with the service account of the machine.
 
 ### Health Check
 
@@ -45,7 +45,7 @@ There's a route returning `200 OK` on `/healthz`
 
 ## Download
 
-Compiled binaries are available in the [releases page](https://github.com/yanc0/asciigram/releases)
+There is an automated build available, ask your trainer for the official docker image location.
 
 
 ## Compile
