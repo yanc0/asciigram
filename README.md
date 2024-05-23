@@ -6,7 +6,7 @@ cloud deployment with standard technologies like: docker, redis or postgresql. I
 the user should understand networking, databases, secrets sharing, IAM.
 
 * `PostgreSQL` is used to store images metadata and votes
-* `Cloud Storage` stores the binary images
+* `Cloud Storage` stores the pictures
 * `Redis` caches ascii, TTL is configurable
 
 By default, ASCIIGram listens on HTTP port 8080.
